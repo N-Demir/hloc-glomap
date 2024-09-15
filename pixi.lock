@@ -6558,7 +6558,7 @@ packages:
   name: lightglue-glomap
   version: 0.1.0
   path: .
-  sha256: 097bb2ac88bec50151dd451480fd96d8de1fe46533fe685c03df93dda669c36d
+  sha256: ecfe12edfa4b9f81c53fa922df02a1804d6f17d274117d37698a3e4ad2a3a875
   requires_python: '>=3.11'
   editable: true
 - kind: pypi

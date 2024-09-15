@@ -54,6 +54,9 @@ post-install = { cmd = "pwd", depends_on = [
     "_hloc-install",
     "_download_vocab_tree",
 ] }
+app = { cmd = "python tools/app.py", description = "Run the gradio app", depends_on = [
+    "post-install",
+] }
 
 [tool.pixi.tasks.reconstruct]
 cmd = """

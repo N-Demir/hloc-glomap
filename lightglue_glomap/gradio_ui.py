@@ -40,7 +40,7 @@ with gr.Blocks() as process_block:
             <style>
                 iframe {
                     width: 100%;
-                    height: 100%;
+                    height: 800px;
                 }
             </style>
         </head>
