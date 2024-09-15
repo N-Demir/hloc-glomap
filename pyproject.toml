@@ -37,5 +37,29 @@ rich = ">=13.8.1,<14"
 appdirs = ">=1.4.4,<2"
 tyro = ">=0.8.10,<0.9"
 gradio = ">=4.44.0,<5"
+rerun-sdk = ">=0.18.2,<0.19"
 
-[tool.pixi.tasks]
+[tool.pixi.tasks.reconstruct]
+cmd = """
+    python tools/reconstruct.py
+    """
+description = "Reconstruct the scene using LightGlue and Glomap."
+
+[tool.pixi.feature.nerfstudio.dependencies]
+python = "3.11.*"
+
+[tool.pixi.feature.nerfstudio.pypi-dependencies]
+open3d = ">=0.18.0,<0.19"
+nerfstudio = ">=1.1.4,<2"
+
+
+[tool.pixi.feature.nerfstudio.tasks.video-processing]
+cmd = """
+    ns-process-data video --num-downscales 0 --skip-colmap
+    """
+description = "Perform video processing on the dataset."
+
+
+[tool.pixi.environments]
+# Create a custom environment which only has the `lint` feature (numpy isn't part of that env).
+nerfstudio = { features = ["nerfstudio"], no-default-feature = true }
