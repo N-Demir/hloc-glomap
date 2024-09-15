@@ -164,3 +164,4 @@ cython_debug/
 # pixi environments
 .pixi
 *.egg-info
+vocab_tree_flickr100K_words32K.bin
