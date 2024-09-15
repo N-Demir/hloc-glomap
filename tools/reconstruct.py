@@ -14,12 +14,12 @@ if __name__ == "__main__":
 
     run_lightglue_glomap(
         image_dir=images_dir,
-        colmap_dir=images_dir.parent / "glomap",
+        colmap_dir=images_dir.parent / "colmap",
         camera_model=CameraModel.OPENCV,
         verbose=True,
         matching_method="sequential",
-        feature_type="disk",
-        matcher_type="disk+lightglue",
+        feature_type="superpoint_aachen",
+        matcher_type="superglue",
         num_matched=50,
         use_single_camera_mode=True,
     )

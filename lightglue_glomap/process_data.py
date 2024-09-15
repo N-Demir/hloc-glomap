@@ -20,13 +20,15 @@ def run_lightglue_glomap(
     matching_method: Literal["vocab_tree", "exhaustive", "sequential"] = "vocab_tree",
     feature_type: Literal[
         "sift",
+        "superpoint_aachen",
         "disk",
-    ] = "disk",
+    ] = "superpoint_aachen",
     matcher_type: Literal[
+        "superglue",
         "NN-ratio",
         "NN-mutual",
         "disk+lightglue",
-    ] = "disk+lightglue",
+    ] = "superglue",
     num_matched: int = 50,
     use_single_camera_mode: bool = True,
 ) -> None:
