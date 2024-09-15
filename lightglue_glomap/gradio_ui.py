@@ -31,13 +31,31 @@ def run_reconstruction_fn(
 
 
 with gr.Blocks() as process_block:
-    input_file = gr.File(file_count="single", file_types=["zip"], type="filepath")
-    with gr.Accordion(label="Advanced Options", open=False):
-        password = gr.Textbox(label="Password", type="password")
-
-    run_btn = gr.Button(value="Run Reconstruction")
-    run_btn.click(
-        fn=run_reconstruction_fn,
-        inputs=(input_file, password),
-        outputs=None,
+    # input_file = gr.File(file_count="single", file_types=["zip"], type="filepath")
+    gr.HTML(
+        """
+        <html>
+        <head>
+            <title>My Great Game</title>
+            <style>
+                iframe {
+                    width: 100%;
+                    height: 100%;
+                }
+            </style>
+        </head>
+        <body>
+            <iframe loading="lazy" src="https://playcanv.as/b/6ea34b3f"></iframe>
+        </body>
+        </html>
+        """
     )
+    # with gr.Accordion(label="Advanced Options", open=False):
+    #     password = gr.Textbox(label="Password", type="password")
+
+    # run_btn = gr.Button(value="Run Reconstruction")
+    # run_btn.click(
+    #     fn=run_reconstruction_fn,
+    #     inputs=(input_file, password),
+    #     outputs=None,
+    # )
