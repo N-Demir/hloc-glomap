@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Reconstruction",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tools/reconstruct.py",
+            "args": [
+                "--image-dir",
+                "data/custom/short-legocar/nerfstudio-100/images"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
