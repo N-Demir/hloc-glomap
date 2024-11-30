@@ -1,7 +1,7 @@
 import gradio as gr
 from pathlib import Path
 from lightglue_glomap.scripts import run_command, CONSOLE
-from lightglue_glomap.process_data import run_lightglue_glomap
+from lightglue_glomap.process_data import run_hloc_reconstruction
 
 
 def run_reconstruction_fn(
@@ -25,7 +25,7 @@ def run_reconstruction_fn(
     run_command(cmd=unzip_cmd, verbose=True)
     CONSOLE.print(f"Unzipped {zip_path} to {zip_path.parent}")
     input_dir: Path = zip_path.parent / zip_path.stem
-    run_lightglue_glomap(
+    run_hloc_reconstruction(
         image_dir=input_dir / "images", colmap_dir=input_dir / "glomap"
     )
 

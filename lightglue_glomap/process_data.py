@@ -14,8 +14,48 @@ from tqdm import tqdm
 from timeit import default_timer as timer
 
 import rerun as rr
-import cv2
 import numpy as np
+import cv2
+from rerun_loader_colmap.main import read_and_log_sparse_reconstruction
+from contextlib import contextmanager
+
+
+class TimingLogger:
+    def __init__(self, header: str = ""):
+        self.start_time = timer()
+        self.header = header
+        self.entries = []  # Store (section, time) pairs
+        # Initialize markdown table
+        self.markdown_table = (
+            f"# {self.header}\n"
+            "| Pipeline Section | Time Taken |\n"
+            "|------------------|------------|\n"
+        )
+        rr.log(
+            "logs",
+            rr.TextDocument(self.markdown_table, media_type="text/markdown"),
+            static=True,
+        )
+
+    @contextmanager
+    def log_time(self, section_name: str):
+        start_time = timer()
+        try:
+            yield
+        finally:
+            time_taken = timer() - start_time
+            minutes, seconds = divmod(time_taken, 60)
+            time_str = f"{int(minutes)}m {seconds:.1f}s"
+
+            # Add new row to table
+            self.markdown_table += f"| {section_name} | {time_str} |\n"
+
+            # Update rerun log
+            rr.log(
+                "logs",
+                rr.TextDocument(self.markdown_table, media_type="text/markdown"),
+                static=True,
+            )
 
 
 def log_features(
@@ -43,7 +83,10 @@ def log_features(
             f"{cam_log_path}/image",
             rr.Image(bgr, color_model=rr.ColorModel.BGR).compress(jpeg_quality=50),
         )
-        rr.log(f"{cam_log_path}/image/keypoints", rr.Points2D(positions=keypoints))
+        rr.log(
+            f"{cam_log_path}/image/keypoints",
+            rr.Points2D(positions=keypoints, colors=(0, 255, 0), radii=max_dim * 0.001),
+        )
 
 
 def log_matches(
@@ -146,14 +189,14 @@ def send_data_columns(matched_images: np.ndarray, cam_log_path: str) -> None:
     print(f"Time taken to log matches: {timer() - start:.2f} seconds")
 
 
-def run_lightglue_glomap(
+def run_hloc_reconstruction(
     image_dir: Path,
     colmap_dir: Path,
     camera_model: CameraModel = CameraModel.OPENCV,
     verbose: bool = False,
-    matching_method: Literal["vocab_tree", "exhaustive", "sequential"] = "vocab_tree",
+    matching_method: Literal["vocab_tree", "exhaustive", "sequential"] = "sequential",
     feature_type: Literal[
-        "sift", "superpoint_aachen", "disk", "xfeat"
+        "sift", "superpoint_aachen", "disk", "xfeat", "aliked-n16"
     ] = "superpoint_aachen",
     matcher_type: Literal[
         "superglue",
@@ -161,6 +204,8 @@ def run_lightglue_glomap(
         "NN-mutual",
         "disk+lightglue",
         "superpoint+lightglue",
+        "aliked+lightglue",
+        "xfeat+lighterglue",
     ] = "superglue",
     num_matched: int = 50,
     use_single_camera_mode: bool = True,
@@ -187,11 +232,13 @@ def run_lightglue_glomap(
         pairs_from_retrieval,
     )
 
-    # if colmap_dir.exists() and colmap_dir.name == "test":
-    #     print("Removing existing colmap_dir")
-    #     import shutil
+    timing_logger = TimingLogger(header=f"{colmap_dir.name}")
 
-    #     shutil.rmtree(colmap_dir)
+    if colmap_dir.exists() and colmap_dir.name == "test":
+        print("Removing existing colmap_dir")
+        import shutil
+
+        shutil.rmtree(colmap_dir)
 
     outputs = colmap_dir
     sfm_pairs = outputs / "pairs-netvlad.txt"
@@ -212,100 +259,114 @@ def run_lightglue_glomap(
         [p.relative_to(image_dir).as_posix() for p in image_dir.iterdir()]
     )
 
-    start_time: float = timer()
+    with timing_logger.log_time("end-to-end pipeline"):
+        with timing_logger.log_time("feature detection"):
+            extract_features.main(
+                feature_conf, image_dir, image_list=references, feature_path=features
+            )  # type: ignore
 
-    extract_features.main(
-        feature_conf, image_dir, image_list=references, feature_path=features
-    )  # type: ignore
+        with timing_logger.log_time("log feature extraction"):
+            log_features(
+                bgr_dict=bgr_dict, features=features, matching_method=matching_method
+            )
 
-    log_features(bgr_dict=bgr_dict, features=features, matching_method=matching_method)
+        if matching_method == "exhaustive":
+            pairs_from_exhaustive.main(sfm_pairs, image_list=references)  # type: ignore
+        elif matching_method == "sequential":
+            pairs_from_sequential.main(
+                output=sfm_pairs,
+                image_list=references,
+                features=features,
+                overlap=10,
+                quadratic_overlap=False,
+            )  # type: ignore
+        else:
+            retrieval_path = extract_features.main(retrieval_conf, image_dir, outputs)  # type: ignore
+            num_matched = min(len(references), num_matched)
+            pairs_from_retrieval.main(
+                retrieval_path, sfm_pairs, num_matched=num_matched
+            )  # type: ignore
 
-    if matching_method == "exhaustive":
-        pairs_from_exhaustive.main(sfm_pairs, image_list=references)  # type: ignore
-    elif matching_method == "sequential":
-        pairs_from_sequential.main(
-            output=sfm_pairs,
-            image_list=references,
-            features=features,
-            overlap=10,
-            quadratic_overlap=False,
-        )  # type: ignore
-    else:
-        retrieval_path = extract_features.main(retrieval_conf, image_dir, outputs)  # type: ignore
-        num_matched = min(len(references), num_matched)
-        pairs_from_retrieval.main(retrieval_path, sfm_pairs, num_matched=num_matched)  # type: ignore
+        with timing_logger.log_time("feature matching"):
+            match_features.main(
+                matcher_conf, sfm_pairs, features=features, matches=matches
+            )  # type: ignore
 
-    match_features.main(matcher_conf, sfm_pairs, features=features, matches=matches)  # type: ignore
+        image_options = pycolmap.ImageReaderOptions(camera_model=camera_model.value)  # type: ignore
 
-    image_options = pycolmap.ImageReaderOptions(camera_model=camera_model.value)  # type: ignore
+        if use_single_camera_mode:  # one camera per all frames
+            camera_mode = pycolmap.CameraMode.SINGLE  # type: ignore
+        else:  # one camera per frame
+            camera_mode = pycolmap.CameraMode.PER_IMAGE  # type: ignore
 
-    if use_single_camera_mode:  # one camera per all frames
-        camera_mode = pycolmap.CameraMode.SINGLE  # type: ignore
-    else:  # one camera per frame
-        camera_mode = pycolmap.CameraMode.PER_IMAGE  # type: ignore
+        assert features.exists(), features
+        assert sfm_pairs.exists(), sfm_pairs
+        assert matches.exists(), matches
 
-    assert features.exists(), features
-    assert sfm_pairs.exists(), sfm_pairs
-    assert matches.exists(), matches
+        sfm_dir.mkdir(parents=True, exist_ok=True)
+        database = sfm_dir / "database.db"
 
-    sfm_dir.mkdir(parents=True, exist_ok=True)
-    database = sfm_dir / "database.db"
+        create_empty_db(database)
+        import_images(
+            image_dir, database, camera_mode, image_list=None, options=image_options
+        )
+        image_ids: dict[str, int] = get_image_ids(database)
 
-    create_empty_db(database)
-    import_images(
-        image_dir, database, camera_mode, image_list=None, options=image_options
-    )
-    image_ids: dict[str, int] = get_image_ids(database)
+        with timing_logger.log_time("log matches"):
+            log_matches(
+                bgr_dict=bgr_dict,
+                pairs_path=sfm_pairs,
+                matches_path=matches,
+                features_path=features,
+                image_ids=image_ids,
+            )
 
-    log_matches(
-        bgr_dict=bgr_dict,
-        pairs_path=sfm_pairs,
-        matches_path=matches,
-        features_path=features,
-        image_ids=image_ids,
-    )
+        import_features(image_ids, database, features)
+        import_matches(
+            image_ids,
+            database,
+            sfm_pairs,
+            matches,
+            min_match_score=None,
+            skip_geometric_verification=False,
+        )
+        estimation_and_geometric_verification(database, sfm_pairs, verbose)
 
-    import_features(image_ids, database, features)
-    import_matches(
-        image_ids,
-        database,
-        sfm_pairs,
-        matches,
-        min_match_score=None,
-        skip_geometric_verification=False,
-    )
-    estimation_and_geometric_verification(database, sfm_pairs, verbose)
-
-    # Bundle adjustment
-    num_images: int = len(list(image_dir.glob("*")))
-    sparse_dir = colmap_dir / "sparse"
-    sparse_dir.mkdir(parents=True, exist_ok=True)
-    mapper_cmd = [
-        f"{colmap_cmd} mapper",
-        f"--database_path {database}",
-        f"--image_path {image_dir}",
-        f"--output_path {sparse_dir}",
-    ]
-    if colmap_cmd == "glomap":
-        mapper_cmd += [
-            f"--TrackEstablishment.max_num_tracks {2000*num_images}",
+        # Bundle adjustment
+        num_images: int = len(list(image_dir.glob("*")))
+        sparse_dir = colmap_dir / "sparse"
+        sparse_dir.mkdir(parents=True, exist_ok=True)
+        mapper_cmd = [
+            f"{colmap_cmd} mapper",
+            f"--database_path {database}",
+            f"--image_path {image_dir}",
+            f"--output_path {sparse_dir}",
         ]
+        if colmap_cmd == "glomap":
+            mapper_cmd += [
+                f"--TrackEstablishment.max_num_tracks {1000*num_images}",
+            ]
 
-    mapper_cmd = " ".join(mapper_cmd)
+        mapper_cmd = " ".join(mapper_cmd)
 
-    with status(
-        msg=f"[bold yellow]Running {colmap_cmd} bundle adjustment... (This may take a while)",
-        spinner="circle",
-        verbose=verbose,
-    ):
-        run_command(mapper_cmd, verbose=verbose)
+        # start_time_map = timer()
 
-    colmap_to_json(
-        recon_dir=sfm_dir,
-        output_dir=colmap_dir.parent,
-    )
+        with timing_logger.log_time(f"{colmap_cmd} bundle adjustment"):
+            with status(
+                msg=f"[bold yellow]Running {colmap_cmd} bundle adjustment... (This may take a while)",
+                spinner="circle",
+                verbose=verbose,
+            ):
+                run_command(mapper_cmd, verbose=verbose)
 
-    end_time = timer()
-    CONSOLE.log(
-        f"[bold green]:tada: Done {colmap_cmd} bundle adjustment. Time taken: {end_time - start_time:.2f} seconds."
-    )
+        colmap_to_json(
+            recon_dir=sfm_dir,
+            output_dir=colmap_dir.parent,
+        )
+
+        rr.reset_time()  # Clears all set timeline info.
+        read_and_log_sparse_reconstruction(
+            model_path=sfm_dir, filter_output=False, resize=None, extention=".bin"
+        )
+
+        CONSOLE.log(f"[bold green]:tada: Done {colmap_cmd} bundle adjustment.")

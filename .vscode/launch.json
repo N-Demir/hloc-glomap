@@ -8,7 +8,7 @@
             "program": "${workspaceFolder}/tools/reconstruct.py",
             "args": [
                 "--image-dir",
-                "data/custom/short-legocar/nerfstudio-100/images"
+                "data/custom/kitchen-6g-nov-27-2024/nerfstudio-100/images"
             ],
             "console": "integratedTerminal",
             "justMyCode": false,
