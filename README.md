@@ -1,4 +1,4 @@
-# lightglue-glomap
+# hloc-glomap
 
 ### first create the image dataset and folder
 `pixi run video-processing --data $DATA-PATH --output-dir $OUTPUT-PATH`
