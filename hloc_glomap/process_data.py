@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Literal
-from lightglue_glomap import pairs_from_sequential
-from lightglue_glomap.colmap_utils import CameraModel, colmap_to_json
-from lightglue_glomap.scripts import CONSOLE, run_command, status
+from hloc_glomap import pairs_from_sequential
+from hloc_glomap.colmap_utils import CameraModel, colmap_to_json
+from hloc_glomap.scripts import CONSOLE, run_command, status
 from hloc.reconstruction import create_empty_db, import_images, get_image_ids
 from hloc.triangulation import (
     import_features,

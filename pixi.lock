@@ -3877,6 +3877,15 @@ packages:
   - gdown
   - lightglue @ git+https://github.com/cvg/LightGlue
   requires_python: '>=3.6'
+- kind: pypi
+  name: hloc-glomap
+  version: 0.1.0
+  path: .
+  sha256: b36bea96a52db3782321f4a60796c6d2bfcfcb4133252b2f2da5458159a7cc24
+  requires_dist:
+  - mmcv-lite
+  requires_python: '>=3.11'
+  editable: true
 - kind: conda
   name: hpack
   version: 4.0.0
@@ -7018,15 +7027,6 @@ packages:
   - flake8 ; extra == 'dev'
   - isort ; extra == 'dev'
   requires_python: '>=3.6'
-- kind: pypi
-  name: lightglue-glomap
-  version: 0.1.0
-  path: .
-  sha256: 61e460514361dd300fb8287783f0539f487b5d4e91b2b8e036530df4a5a9a105
-  requires_dist:
-  - mmcv-lite
-  requires_python: '>=3.11'
-  editable: true
 - kind: pypi
   name: lightning-utilities
   version: 0.11.9

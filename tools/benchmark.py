@@ -1,6 +1,6 @@
 from pathlib import Path
 from dataclasses import dataclass
-from lightglue_glomap.scripts import run_command, status
+from hloc_glomap.scripts import run_command, status
 import tyro
 
 
@@ -54,7 +54,7 @@ def main(config: BenchmarkConfig) -> None:
     ]
     mapper_types = [
         "glomap",
-        "colmap",
+        # "colmap",
     ]
     for output_dir in output_dirs:
         for feature_type, matcher_type in feature_matcher_pairs:

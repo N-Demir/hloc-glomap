@@ -1,7 +1,7 @@
 import gradio as gr
 from pathlib import Path
-from lightglue_glomap.scripts import run_command, CONSOLE
-from lightglue_glomap.process_data import run_hloc_reconstruction
+from hloc_glomap.scripts import run_command, CONSOLE
+from hloc_glomap.process_data import run_hloc_reconstruction
 
 
 def run_reconstruction_fn(

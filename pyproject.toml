@@ -1,6 +1,6 @@
 [project]
 description = "Add a short description here"
-name = "lightglue-glomap"
+name = "hloc-glomap"
 requires-python = ">= 3.11"
 version = "0.1.0"
 dependencies = ["mmcv-lite"]
@@ -10,7 +10,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["lightglue_glomap*"]
+include = ["hloc_glomap*"]
 
 [tool.pixi.project]
 channels = ["nvidia", "nvidia/label/cuda-11.8.0", "conda-forge", "pytorch"]
@@ -26,7 +26,7 @@ cuda = "11.8"
 [tool.pixi.pypi-dependencies]
 rerun-loader-colmap = { git = "https://github.com/pablovela5620/rerun-loader-colmap.git" }
 hloc = { git = "https://github.com/pablovela5620/Hierarchical-Localization.git", rev = "75a97e9ec24ae7f50352ed7096616f941e50e185" }
-lightglue-glomap = { path = ".", editable = true }
+hloc-glomap = { path = ".", editable = true }
 
 [tool.pixi.dependencies]
 python = "3.11.*"
