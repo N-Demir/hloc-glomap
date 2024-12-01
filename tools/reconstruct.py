@@ -2,6 +2,7 @@ from pathlib import Path
 from lightglue_glomap.process_data import run_hloc_reconstruction
 from lightglue_glomap.colmap_utils import CameraModel
 import rerun as rr
+from rerun.recording_stream import RecordingStream
 from dataclasses import dataclass
 from typing import Literal
 import tyro
@@ -15,13 +16,20 @@ class RerunConfig:
     """Wether to spawn a new rerun instance or not"""
     connect: bool = False
     """Wether to connect to an existing rerun instance or not"""
+    headless: bool = False
     save: Path | None = None
     """Path to save the rerun data, this will make it so no data is visualized but saved"""
 
     def __post_init__(self):
-        rr.init(self.application, spawn=self.spawn)
-        if self.connect:
-            rr.connect_tcp()
+        rr.init(application_id=self.application)
+        rec: RecordingStream = rr.get_global_data_recording()  # type: ignore[assignment]
+
+        if self.save is not None:
+            rec.save(self.save)
+        elif self.connect:
+            rec.connect()
+        elif not self.headless:
+            rec.spawn()
 
 
 @dataclass
