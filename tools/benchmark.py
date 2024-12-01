@@ -1,13 +1,44 @@
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from hloc_glomap.scripts import run_command, status
 import tyro
+from enum import Enum
+
+
+class MapperType(Enum):
+    GLOMAP = "glomap"
+    COLMAP = "colmap"
+
+
+class FeatureMatcherPair(Enum):
+    DISK = ("disk", "disk+lightglue")
+    ALIKED = ("aliked-n16", "aliked+lightglue")
+    XFEAT = ("xfeat", "xfeat+lighterglue")
+
+    @property
+    def feature(self) -> str:
+        return self.value[0]
+
+    @property
+    def matcher(self) -> str:
+        return self.value[1]
 
 
 @dataclass
 class BenchmarkConfig:
     video_dir: Path
     """Path to the image directory"""
+    num_frames_to_extract: list[int] = field(default_factory=lambda: [100, 250])
+    """Number of frames to extract from the video"""
+    feature_matcher_pairs: list[FeatureMatcherPair] = field(
+        default_factory=lambda: [
+            FeatureMatcherPair.DISK,
+            FeatureMatcherPair.ALIKED,
+            FeatureMatcherPair.XFEAT,
+        ]
+    )
+    """Feature and matcher pairs to use for reconstruction"""
+    mapper_types: list[MapperType] = field(default_factory=lambda: [MapperType.GLOMAP])
 
 
 def main(config: BenchmarkConfig) -> None:
@@ -19,7 +50,7 @@ def main(config: BenchmarkConfig) -> None:
     rrd_dir.mkdir(parents=True, exist_ok=True)
     output_dirs: list[Path] = []
     # extract frames from videos at different num_frames_target
-    for num_frames_target in [100, 250, 500]:
+    for num_frames_target in config.num_frames_to_extract:
         # create a bunch of rrds
         output_dir = output_parent_dir / f"{num_frames_target}"
         output_dirs.append(output_dir)
@@ -45,31 +76,20 @@ def main(config: BenchmarkConfig) -> None:
                 verbose=verbose,
             )
 
-    # once we have all the frames, we can run the reconstruction on each on with different settings
-    # Define feature-matcher pairs
-    feature_matcher_pairs = [
-        ("disk", "disk+lightglue"),
-        ("aliked-n16", "aliked+lightglue"),
-        ("xfeat", "xfeat+lighterglue"),
-    ]
-    mapper_types = [
-        "glomap",
-        # "colmap",
-    ]
     for output_dir in output_dirs:
-        for feature_type, matcher_type in feature_matcher_pairs:
-            for mapper_type in mapper_types:
+        for pair in config.feature_matcher_pairs:
+            for mapper_type in config.mapper_types:
                 reconstruction_cmd = [
                     "python tools/reconstruct.py",
                     f"--image-dir {output_dir}/images",
-                    f"--feature-type {feature_type}",
-                    f"--matcher-type {matcher_type}",
-                    f"--colmap-cmd {mapper_type}",
-                    f"--rerun-config.save {rrd_dir / f'{output_dir.stem}-{feature_type}-{matcher_type}-{mapper_type}.rrd'}",
+                    f"--feature-type {pair.feature}",
+                    f"--matcher-type {pair.matcher}",
+                    f"--colmap-cmd {mapper_type.value}",
+                    f"--rerun-config.save {rrd_dir / f'{output_dir.stem}-{pair.feature}-{pair.matcher}-{mapper_type.value}.rrd'}",
                 ]
                 reconstruction_cmd = " ".join(reconstruction_cmd)
                 with status(
-                    msg=f"[bold yellow]Running reconstruction with {feature_type}/{matcher_type}/{mapper_type}[/]",
+                    msg=f"[bold yellow]Running reconstruction with {pair.feature}/{pair.matcher}/{mapper_type.value}[/]",
                     spinner="circle",
                     verbose=verbose,
                 ):
