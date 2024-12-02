@@ -273,12 +273,19 @@ def run_hloc_reconstruction(
         if matching_method == "exhaustive":
             pairs_from_exhaustive.main(sfm_pairs, image_list=references)  # type: ignore
         elif matching_method == "sequential":
+            loop_closure: bool = True
+            if loop_closure:
+                retrieval_path = extract_features.main(
+                    retrieval_conf, image_dir, outputs
+                )  # type: ignore
             pairs_from_sequential.main(
                 output=sfm_pairs,
                 image_list=references,
                 features=features,
-                overlap=10,
+                window_size=10,
                 quadratic_overlap=False,
+                loop_closure=loop_closure,
+                retrieval_path=retrieval_path,
             )  # type: ignore
         else:
             retrieval_path = extract_features.main(retrieval_conf, image_dir, outputs)  # type: ignore
