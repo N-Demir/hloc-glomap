@@ -62,15 +62,15 @@ class ReconstructionConfig:
     """Number of matched features for vocab_tree"""
     use_single_camera_mode: bool = True
     """Use single camera mode"""
-    colmap_cmd: Literal["colmap", "glomap"] = "glomap"
-    """Colmap command"""
+    mapper_cmd: Literal["colmap", "glomap"] = "glomap"
+    """Mapper command"""
 
 
 def main(config: ReconstructionConfig) -> None:
     run_hloc_reconstruction(
         image_dir=config.image_dir,
         colmap_dir=config.image_dir.parent
-        / f"{config.colmap_cmd}-{config.feature_type}-{config.matcher_type}",
+        / f"{config.mapper_cmd}-{config.feature_type}-{config.matcher_type}",
         camera_model=config.camera_model,
         verbose=config.verbose,
         matching_method=config.matching_method,
@@ -78,7 +78,7 @@ def main(config: ReconstructionConfig) -> None:
         matcher_type=config.matcher_type,
         num_matched=config.num_matched,
         use_single_camera_mode=config.use_single_camera_mode,
-        colmap_cmd=config.colmap_cmd,
+        colmap_cmd=config.mapper_cmd,
     )
 
 
