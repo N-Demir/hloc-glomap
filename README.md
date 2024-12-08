@@ -37,6 +37,19 @@ Running splatting
 
 All commands can be listed using `pixi task list`
 
+## Time Comparison
+<p align="center">
+  <img src="media/time-taken.png" alt="time comparison" width="720" />
+</p>
+**Note**: The time comparison shown above is based on a single example and is very anecdotal. It may not represent the performance in all scenarios.
+
+The above compares glomap with colmap using the same feature+matcher but different pair generations (sequential v.s. vocab tree)
+
+| Matching Type               | GLOMAP Reconstruction Time | COLMAP Reconstruction Time |
+|-----------------------------|----------------------------|----------------------------|
+| Vocabulary Tree Matching    | 18 minutes 40 seconds                 | 31 minutes 52 seconds                 |
+| Sequential w/ Loop Closure  | 8 minutes 51 seconds                  | 19 minutes 21 seconds                  |
+
 ## Acknowledgements
 Thanks to the original GLOMAP and hloc repos!
 
