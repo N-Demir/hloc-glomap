@@ -17,9 +17,9 @@ def main(
     features: Optional[Path] = None,
     window_size: Optional[int] = 10,
     quadratic_overlap: bool = True,
-    loop_closure: bool = False,
+    use_loop_closure: bool = False,
     retrieval_path: Optional[Union[Path, str]] = None,
-    retrieval_interval: Optional[int] = 5,
+    retrieval_interval: Optional[int] = 2,
     num_loc: Optional[int] = 5,
 ) -> None:
     if image_list is not None:
@@ -47,7 +47,7 @@ def main(
                 if q > window_size and i + q < N:
                     pairs.append((names_q[i], names_q[i + q]))
 
-    if loop_closure:
+    if use_loop_closure:
         retrieval_pairs_tmp = output.parent / f"retrieval-pairs-tmp.txt"
 
         # match mask describes for each image, which images NOT to include in retrevial match search

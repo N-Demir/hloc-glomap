@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import Literal
-from hloc_glomap import pairs_from_sequential
 from hloc_glomap.colmap_utils import CameraModel, colmap_to_json
 from hloc_glomap.scripts import CONSOLE, run_command, status
 from hloc.reconstruction import create_empty_db, import_images, get_image_ids
@@ -10,6 +9,7 @@ from hloc.triangulation import (
     estimation_and_geometric_verification,
 )
 from hloc.utils.io import get_keypoints, get_matches
+from hloc import pairs_from_sequential
 from tqdm import tqdm
 from timeit import default_timer as timer
 
@@ -197,7 +197,7 @@ def run_hloc_reconstruction(
     matching_method: Literal["vocab_tree", "exhaustive", "sequential"] = "sequential",
     feature_type: Literal[
         "sift", "superpoint_aachen", "disk", "xfeat", "aliked-n16"
-    ] = "superpoint_aachen",
+    ] = "disk",
     matcher_type: Literal[
         "superglue",
         "NN-ratio",
@@ -206,9 +206,10 @@ def run_hloc_reconstruction(
         "superpoint+lightglue",
         "aliked+lightglue",
         "xfeat+lighterglue",
-    ] = "superglue",
+    ] = "disk+lightglue",
     num_matched: int = 50,
     use_single_camera_mode: bool = True,
+    use_loop_closure: bool = True,
     colmap_cmd: Literal["colmap", "glomap"] = "glomap",
 ) -> None:
     """Runs hloc on the images.
@@ -273,8 +274,7 @@ def run_hloc_reconstruction(
         if matching_method == "exhaustive":
             pairs_from_exhaustive.main(sfm_pairs, image_list=references)  # type: ignore
         elif matching_method == "sequential":
-            loop_closure: bool = True
-            if loop_closure:
+            if use_loop_closure:
                 retrieval_path = extract_features.main(
                     retrieval_conf, image_dir, outputs
                 )  # type: ignore
@@ -284,7 +284,7 @@ def run_hloc_reconstruction(
                 features=features,
                 window_size=10,
                 quadratic_overlap=False,
-                loop_closure=loop_closure,
+                use_loop_closure=use_loop_closure,
                 retrieval_path=retrieval_path,
             )  # type: ignore
         else:
@@ -356,8 +356,6 @@ def run_hloc_reconstruction(
 
         mapper_cmd = " ".join(mapper_cmd)
 
-        # start_time_map = timer()
-
         with timing_logger.log_time(f"{colmap_cmd} bundle adjustment"):
             with status(
                 msg=f"[bold yellow]Running {colmap_cmd} bundle adjustment... (This may take a while)",
@@ -366,11 +364,11 @@ def run_hloc_reconstruction(
             ):
                 run_command(mapper_cmd, verbose=verbose)
 
+        # save to parent directory so it works with nerfstudio out of the box
         colmap_to_json(
             recon_dir=sfm_dir,
             output_dir=colmap_dir.parent,
         )
-
         rr.reset_time()  # Clears all set timeline info.
         read_and_log_sparse_reconstruction(
             model_path=sfm_dir, filter_output=False, resize=None, extention=".bin"
