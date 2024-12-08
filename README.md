@@ -11,3 +11,5 @@ pixi run post-install
 pixi shell
 python tools/reconstruct.py --help
 ```
+Running splatting
+`DATA_DIR="$OUTPUT-PATH" pixi run train-splat `

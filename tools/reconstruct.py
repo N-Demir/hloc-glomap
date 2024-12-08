@@ -46,7 +46,7 @@ class ReconstructionConfig:
     """Matching method"""
     feature_type: Literal[
         "sift", "superpoint_aachen", "disk", "xfeat", "aliked-n16"
-    ] = "xfeat"
+    ] = "aliked-n16"
     """Feature type"""
     matcher_type: Literal[
         "superglue",
@@ -56,13 +56,15 @@ class ReconstructionConfig:
         "superpoint+lightglue",
         "aliked+lightglue",
         "xfeat+lighterglue",
-    ] = "xfeat+lighterglue"
+    ] = "aliked+lightglue"
     """Matcher type"""
     num_matched: int = 50
     """Number of matched features for vocab_tree"""
     use_single_camera_mode: bool = True
     """Use single camera mode"""
-    mapper_cmd: Literal["colmap", "glomap"] = "glomap"
+    use_loop_closure: bool = True
+    """Use loop closure"""
+    mapper_cmd: Literal["colmap", "glomap"] = "colmap"
     """Mapper command"""
 
 
@@ -78,6 +80,7 @@ def main(config: ReconstructionConfig) -> None:
         matcher_type=config.matcher_type,
         num_matched=config.num_matched,
         use_single_camera_mode=config.use_single_camera_mode,
+        use_loop_closure=config.use_loop_closure,
         colmap_cmd=config.mapper_cmd,
     )
 

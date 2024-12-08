@@ -121,15 +121,29 @@ cuda = "11.8"
 
 [tool.pixi.feature.nerfstudio.tasks.video-processing]
 cmd = """
-    time ns-process-data video --num-downscales 0 --skip-colmap
+    time ns-process-data video --num-downscales 1 --skip-colmap
     """
 description = "Perform video processing on the dataset."
 
 [tool.pixi.feature.nerfstudio.tasks.train-splat]
 cmd = """
-    ns-train splatfacto --output-dir $DATA_DIR/outputs --max-num-iterations 30000 --data $DATA_DIR
+    ns-train splatfacto --pipeline.model.use-bilateral-grid True --output-dir $DATA_DIR/outputs --max-num-iterations 7000 --data $DATA_DIR
     """
 description = "Train Splatfacto"
+
+[tool.pixi.feature.nerfstudio.tasks.train-colmap-splat]
+cmd = """
+    ns-train splatfacto \
+    --experiment-name $EXP_NAME \
+    --pipeline.model.use-bilateral-grid True \
+    --vis viewer+tensorboard \
+    --viewer.quit-on-train-completion True \
+    --output-dir $DATA_DIR/outputs \
+    --max-num-iterations 7000 \
+    colmap --data $DATA_DIR
+    --colmap-path $COLMAP_DIR
+    """
+description = "Train Splatfacto using Colmap Data"
 
 [tool.pixi.feature.nerfstudio.dependencies]
 python = "3.11.*"
@@ -143,7 +157,7 @@ numpy = "<2"
 [tool.pixi.feature.nerfstudio.pypi-dependencies]
 open3d = ">=0.18.0,<0.19"
 # last version of nerfstudio with gsplat<1.0.0
-nerfstudio = { git = "https://github.com/nerfstudio-project/nerfstudio.git", rev = "959fda2e2526b0d2b6c2372cb5bd388bb3b7e7bf" }
+nerfstudio = { git = "https://github.com/nerfstudio-project/nerfstudio.git", rev = "e8bf47269251b5f49c8506cd7eb0a2aa240222c4" }
 
 
 [tool.pixi.environments]
