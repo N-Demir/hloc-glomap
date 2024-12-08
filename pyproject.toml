@@ -25,8 +25,10 @@ cuda = "11.8"
 
 [tool.pixi.pypi-dependencies]
 rerun-loader-colmap = { git = "https://github.com/pablovela5620/rerun-loader-colmap.git" }
-hloc = { git = "https://github.com/pablovela5620/Hierarchical-Localization.git", rev = "75a97e9ec24ae7f50352ed7096616f941e50e185" }
+hloc = { git = "https://github.com/pablovela5620/Hierarchical-Localization.git", rev = "56ac6a132d5d4983ffb12049652d6d1f2cee8553" }
 hloc-glomap = { path = ".", editable = true }
+gradio_rerun = { url = "https://huggingface.co/datasets/pablovela5620/gradio-rerun-0.0.9/resolve/main/gradio_rerun-0.0.9-py3-none-any.whl" }
+
 
 [tool.pixi.dependencies]
 python = "3.11.*"
@@ -97,7 +99,9 @@ cmd = """
 cmake -B build -S . -GNinja \
     -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
-    -DCMAKE_EXE_LINKER_FLAGS="-L$CONDA_PREFIX/lib"
+    -DCMAKE_EXE_LINKER_FLAGS="-L$CONDA_PREFIX/lib" \
+    -DCHOLMOD_LIBRARY=$CONDA_PREFIX/lib/libcholmod.so \
+    -DCHOLMOD_INCLUDE_DIR=$CONDA_PREFIX/include/suitesparse
 """
 cwd = "third_party/glomap"
 depends_on = ["_clone-glomap", "_make-third_party-dir"]
@@ -121,13 +125,14 @@ cuda = "11.8"
 
 [tool.pixi.feature.nerfstudio.tasks.video-processing]
 cmd = """
-    time ns-process-data video --num-downscales 1 --skip-colmap
+    time ns-process-data video --skip-colmap
     """
 description = "Perform video processing on the dataset."
 
 [tool.pixi.feature.nerfstudio.tasks.train-splat]
 cmd = """
-    ns-train splatfacto --pipeline.model.use-bilateral-grid True --output-dir $DATA_DIR/outputs --max-num-iterations 7000 --data $DATA_DIR
+    ns-train splatfacto --pipeline.model.use-bilateral-grid True --output-dir $DATA_DIR/outputs --max-num-iterations 7000 colmap --data $DATA_DIR
+    --colmap-path sparse/0/
     """
 description = "Train Splatfacto"
 
