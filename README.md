@@ -43,7 +43,7 @@ All commands can be listed using `pixi task list`
 </p>
 **Note**: The time comparison shown above is based on a single example and is very anecdotal. It may not represent the performance in all scenarios.
 
-The above compares glomap with colmap using the same feature+matcher but different pair generations (sequential v.s. vocab tree)
+The above compares glomap with colmap using the same feature+matcher but different pair generations (sequential v.s. vocab tree) on 300 images
 
 | Matching Type               | GLOMAP Reconstruction Time | COLMAP Reconstruction Time |
 |-----------------------------|----------------------------|----------------------------|
