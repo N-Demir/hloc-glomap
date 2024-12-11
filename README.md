@@ -23,7 +23,12 @@ Uses [Rerun](https://rerun.io/) to visualize, [Gradio](https://www.gradio.app) f
 ### Using Pixi
 Make sure you have the [Pixi](https://pixi.sh/latest/#installation) package manager installed
 
-to use gradio interface
+first clone the repo and go to the parent directory
+```bash
+https://github.com/pablovela5620/hloc-glomap.git
+cd hloc-glomap
+```
+then within the parent directory to use gradio interface
 ```bash
 pixi run app
 ```
