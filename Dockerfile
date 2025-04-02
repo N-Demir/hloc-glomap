@@ -42,9 +42,18 @@ RUN apt-get update && apt-get install -y curl gnupg && \
     libavcodec-dev \
     libeigen3-dev \
     libxxf86vm-dev \
+    libflann-dev \
+    qtbase5-dev \
+    qtchooser \
+    qt5-qmake \
+    qtbase5-dev-tools \
     tmux \
-    && curl -fsSL https://pixi.sh/install.sh | bash \
     && rm -rf /var/lib/apt/lists/*
+
+# Install pixi using the official installation method
+RUN curl -fsSL https://pixi.sh/install.sh | bash
+ENV PATH="/root/.pixi/bin:${PATH}"
+
 
 # Copy the service account key file
 COPY gcs-tour-project-service-account-key.json .
@@ -70,4 +79,10 @@ RUN git clone https://github.com/N-Demir/hloc-glomap.git
 
 WORKDIR hloc-glomap
 
+# TODO: maybe necessary to use this
+# Set CUDA override for Pixi -- 
+# ENV CONDA_OVERRIDE_CUDA=11.8
+
+# Initialize pixi environment
 RUN pixi install
+RUN pixi run post-install

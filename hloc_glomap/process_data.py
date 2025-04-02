@@ -241,9 +241,11 @@ def run_hloc_reconstruction(
 
         shutil.rmtree(colmap_dir)
 
+    sfm_dir_extension = colmap_cmd + matching_method + feature_type + matcher_type
+
     outputs = colmap_dir
     sfm_pairs = outputs / "pairs-netvlad.txt"
-    sfm_dir = outputs / "sparse" / "0"
+    sfm_dir = outputs / f"sparse_{sfm_dir_extension}" / "0"
     features = outputs / "features.h5"
     matches = outputs / "matches.h5"
 

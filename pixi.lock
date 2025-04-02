@@ -410,10 +410,10 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/54/70/e07c381e6488a77094f04c85c9caf1c8008cdc30778f7019bc52e5285ef0/gdown-5.2.0-py3-none-any.whl
       - pypi: direct+https://huggingface.co/datasets/pablovela5620/gradio-rerun-0.0.9/resolve/main/gradio_rerun-0.0.9-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/e1/89/118c3255d6ff2db33b062ec996a762d99ae50c21f54a8a6047ae8eda1b9f/h5py-3.12.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      - pypi: git+https://github.com/pablovela5620/Hierarchical-Localization.git@56ac6a132d5d4983ffb12049652d6d1f2cee8553
+      - pypi: git+https://github.com/pablovela5620/Hierarchical-Localization.git?rev=56ac6a132d5d4983ffb12049652d6d1f2cee8553#56ac6a132d5d4983ffb12049652d6d1f2cee8553
       - pypi: https://files.pythonhosted.org/packages/d8/cf/a61ef6f7faf98edadf4ce8094873d298f8582a3ec59b65c9174c516926e8/kornia-0.7.4-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/66/04/7de2357432d3281d7784db220b42063f28ac2f0821072a9a18ee655f1576/kornia_rs-0.1.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      - pypi: git+https://github.com/cvg/LightGlue@edb2b838efb2ecfe3f88097c5fad9887d95aedad
+      - pypi: git+https://github.com/cvg/LightGlue#edb2b838efb2ecfe3f88097c5fad9887d95aedad
       - pypi: https://files.pythonhosted.org/packages/59/bd/5d468c171f201d6169bec848d1116e95736854eec72307299bc68939fe45/mmcv_lite-2.2.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/52/25/f36666310ab14b3c301857965920b1faae5e6b15bc8476d8218f125bc7d1/mmengine-0.10.5-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3f/a4/d2537f47fd7fcfba966bd806e3ec18e7ee1681056d4b0a9c8d983983e4d5/opencv_python-4.10.0.84-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -421,7 +421,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/58/41/12f7c46ad7e52ffe924354619daf72d3abe279b95970fe3b8f3a96d994c3/pycolmap-3.10.0-cp311-cp311-manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/bd/24/12818598c362d7f300f18e74db45963dbcb85150324092410c8b49405e42/pyproject_hooks-1.2.0-py3-none-any.whl
-      - pypi: git+https://github.com/pablovela5620/rerun-loader-colmap.git@72af55a6af6a4d979ec8da7ff47e74a7fb336e37
+      - pypi: git+https://github.com/pablovela5620/rerun-loader-colmap.git#72af55a6af6a4d979ec8da7ff47e74a7fb336e37
       - pypi: https://files.pythonhosted.org/packages/93/6b/701776d4bd6bdd9b629c387b5140f006185bd8ddea16788a44434376b98f/scipy-1.14.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/d1/c2/fe97d779f3ef3b15f05c94a2f1e3d21732574ed441687474db9d342a7315/soupsieve-2.6-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
@@ -751,7 +751,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/b8/bb/bb5b6a515d1584aa2fd89965b11db6632e4bdc69495a52374bcc36e56cfa/nbconvert-7.16.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/a9/82/0340caa499416c78e5d8f5f05947ae4bc3cba53c9f038ab6e9ed964e22f1/nbformat-5.10.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/f4/16/e93ebb619a3edd8851df21425fe20b7491bd1d819fc19beb9bfc1bf2556e/nerfacc-0.5.2-py3-none-any.whl
-      - pypi: git+https://github.com/nerfstudio-project/nerfstudio.git@e8bf47269251b5f49c8506cd7eb0a2aa240222c4
+      - pypi: git+https://github.com/nerfstudio-project/nerfstudio.git?rev=e8bf47269251b5f49c8506cd7eb0a2aa240222c4#e8bf47269251b5f49c8506cd7eb0a2aa240222c4
       - pypi: https://files.pythonhosted.org/packages/a0/c4/c2971a3ba4c6103a3d10c4b0f24f461ddc027f0f09763220cf35ca1401b3/nest_asyncio-1.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b9/54/dd730b32ea14ea797530a4479b2ed46a6fb250f682a9cfb997e968bf0261/networkx-3.4.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/62/54/787bb70e6af2f1b1853af9bab62a5e7cb35b957d72daf253b7f3c653c005/ninja-1.11.1.2-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.whl
@@ -935,7 +935,7 @@ packages:
   - pytest>=7.0 ; extra == 'test'
   - pytest-mock>=3.6.1 ; extra == 'test'
   - trustme ; extra == 'test'
-  - uvloop>=0.21.0b1 ; platform_python_implementation == 'CPython' and platform_system != 'Windows' and extra == 'test'
+  - uvloop>=0.21.0b1 ; platform_python_implementation == 'CPython' and sys_platform != 'win32' and extra == 'test'
   - truststore>=0.9.1 ; python_full_version >= '3.10' and extra == 'test'
   - trio>=0.26.1 ; extra == 'trio'
   requires_python: '>=3.9'
@@ -1704,7 +1704,7 @@ packages:
   version: 8.1.7
   sha256: ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28
   requires_dist:
-  - colorama ; platform_system == 'Windows'
+  - colorama ; sys_platform == 'win32'
   - importlib-metadata ; python_full_version < '3.8'
   requires_python: '>=3.7'
 - conda: https://conda.anaconda.org/conda-forge/noarch/click-8.1.7-unix_pyh707e725_0.conda
@@ -3105,7 +3105,7 @@ packages:
   purls: []
   size: 1603653
   timestamp: 1721186240105
-- pypi: git+https://github.com/pablovela5620/Hierarchical-Localization.git@56ac6a132d5d4983ffb12049652d6d1f2cee8553
+- pypi: git+https://github.com/pablovela5620/Hierarchical-Localization.git?rev=56ac6a132d5d4983ffb12049652d6d1f2cee8553#56ac6a132d5d4983ffb12049652d6d1f2cee8553
   name: hloc
   version: '1.5'
   requires_dist:
@@ -3419,7 +3419,7 @@ packages:
   version: 6.29.5
   sha256: afdb66ba5aa354b09b91379bac28ae4afebbb30e8b39510c9690afb7a10421b5
   requires_dist:
-  - appnope ; platform_system == 'Darwin'
+  - appnope ; sys_platform == 'darwin'
   - comm>=0.1.1
   - debugpy>=1.6.5
   - ipython>=7.23.1
@@ -5479,7 +5479,7 @@ packages:
   purls: []
   size: 60963
   timestamp: 1727963148474
-- pypi: git+https://github.com/cvg/LightGlue@edb2b838efb2ecfe3f88097c5fad9887d95aedad
+- pypi: git+https://github.com/cvg/LightGlue#edb2b838efb2ecfe3f88097c5fad9887d95aedad
   name: lightglue
   version: '0.0'
   requires_dist:
@@ -6135,7 +6135,7 @@ packages:
   - build ; extra == 'dev'
   - twine ; extra == 'dev'
   requires_python: '>=3.7'
-- pypi: git+https://github.com/nerfstudio-project/nerfstudio.git@e8bf47269251b5f49c8506cd7eb0a2aa240222c4
+- pypi: git+https://github.com/nerfstudio-project/nerfstudio.git?rev=e8bf47269251b5f49c8506cd7eb0a2aa240222c4#e8bf47269251b5f49c8506cd7eb0a2aa240222c4
   name: nerfstudio
   version: 1.1.5
   requires_dist:
@@ -6426,11 +6426,11 @@ packages:
   sha256: 9bcb4944211acf13742dbfd9d3a11dc4e36353ffa1746f2c7dcd6a01c32d1376
   requires_dist:
   - numpy>=1.13.3 ; python_full_version < '3.7'
-  - numpy>=1.21.0 ; python_full_version < '3.10' and platform_machine == 'arm64' and platform_system == 'Darwin'
+  - numpy>=1.21.0 ; python_full_version < '3.10' and platform_machine == 'arm64' and sys_platform == 'darwin'
   - numpy>=1.21.2 ; python_full_version >= '3.10'
-  - numpy>=1.21.4 ; python_full_version >= '3.10' and platform_system == 'Darwin'
+  - numpy>=1.21.4 ; python_full_version >= '3.10' and sys_platform == 'darwin'
   - numpy>=1.23.5 ; python_full_version >= '3.11'
-  - numpy>=1.19.3 ; python_full_version >= '3.6' and platform_machine == 'aarch64' and platform_system == 'Linux'
+  - numpy>=1.19.3 ; python_full_version >= '3.6' and platform_machine == 'aarch64' and sys_platform == 'linux'
   - numpy>=1.17.0 ; python_full_version >= '3.7'
   - numpy>=1.17.3 ; python_full_version >= '3.8'
   - numpy>=1.19.3 ; python_full_version >= '3.9'
@@ -6441,12 +6441,12 @@ packages:
   sha256: 9ace140fc6d647fbe1c692bcb2abce768973491222c067c131d80957c595b71f
   requires_dist:
   - numpy>=1.13.3 ; python_full_version < '3.7'
-  - numpy>=1.21.0 ; python_full_version < '3.10' and platform_machine == 'arm64' and platform_system == 'Darwin'
+  - numpy>=1.21.0 ; python_full_version < '3.10' and platform_machine == 'arm64' and sys_platform == 'darwin'
   - numpy>=1.21.2 ; python_full_version >= '3.10'
-  - numpy>=1.21.4 ; python_full_version >= '3.10' and platform_system == 'Darwin'
+  - numpy>=1.21.4 ; python_full_version >= '3.10' and sys_platform == 'darwin'
   - numpy>=1.23.5 ; python_full_version >= '3.11'
   - numpy>=1.26.0 ; python_full_version >= '3.12'
-  - numpy>=1.19.3 ; python_full_version >= '3.6' and platform_machine == 'aarch64' and platform_system == 'Linux'
+  - numpy>=1.19.3 ; python_full_version >= '3.6' and platform_machine == 'aarch64' and sys_platform == 'linux'
   - numpy>=1.17.0 ; python_full_version >= '3.7'
   - numpy>=1.17.3 ; python_full_version >= '3.8'
   - numpy>=1.19.3 ; python_full_version >= '3.9'
@@ -6457,12 +6457,12 @@ packages:
   sha256: 377d08a7e48a1405b5e84afcbe4798464ce7ee17081c1c23619c8b398ff18295
   requires_dist:
   - numpy>=1.13.3 ; python_full_version < '3.7'
-  - numpy>=1.21.0 ; python_full_version < '3.10' and platform_machine == 'arm64' and platform_system == 'Darwin'
+  - numpy>=1.21.0 ; python_full_version < '3.10' and platform_machine == 'arm64' and sys_platform == 'darwin'
   - numpy>=1.21.2 ; python_full_version >= '3.10'
-  - numpy>=1.21.4 ; python_full_version >= '3.10' and platform_system == 'Darwin'
+  - numpy>=1.21.4 ; python_full_version >= '3.10' and sys_platform == 'darwin'
   - numpy>=1.23.5 ; python_full_version >= '3.11'
   - numpy>=1.26.0 ; python_full_version >= '3.12'
-  - numpy>=1.19.3 ; python_full_version >= '3.6' and platform_machine == 'aarch64' and platform_system == 'Linux'
+  - numpy>=1.19.3 ; python_full_version >= '3.6' and platform_machine == 'aarch64' and sys_platform == 'linux'
   - numpy>=1.17.0 ; python_full_version >= '3.7'
   - numpy>=1.17.3 ; python_full_version >= '3.8'
   - numpy>=1.19.3 ; python_full_version >= '3.9'
@@ -7534,7 +7534,7 @@ packages:
   requires_dist:
   - requests>=2.0.1,<3.0.0
   requires_python: '>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*'
-- pypi: git+https://github.com/pablovela5620/rerun-loader-colmap.git@72af55a6af6a4d979ec8da7ff47e74a7fb336e37
+- pypi: git+https://github.com/pablovela5620/rerun-loader-colmap.git#72af55a6af6a4d979ec8da7ff47e74a7fb336e37
   name: rerun-loader-colmap
   version: 0.1.0
   requires_dist:
@@ -8582,7 +8582,7 @@ packages:
   version: 4.67.1
   sha256: 26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2
   requires_dist:
-  - colorama ; platform_system == 'Windows'
+  - colorama ; sys_platform == 'win32'
   - pytest>=6 ; extra == 'dev'
   - pytest-cov ; extra == 'dev'
   - pytest-timeout ; extra == 'dev'
@@ -8777,7 +8777,7 @@ packages:
   sha256: f7c301b30b1ac7b18672f234e45013786c494d64c0e3621b25b8414637af8f90
   requires_dist:
   - backports-cached-property>=1.0.2 ; python_full_version < '3.8'
-  - colorama>=0.4.0 ; platform_system == 'Windows'
+  - colorama>=0.4.0 ; sys_platform == 'win32'
   - docstring-parser>=0.16
   - eval-type-backport>=0.1.3 ; python_full_version < '3.10'
   - rich>=11.1.0
@@ -8969,7 +8969,7 @@ packages:
   - psutil>=5.9.5
   - yourdfpy>=0.0.53
   - plyfile>=1.0.2
-  - pyliblzfse>=0.4.1 ; platform_system != 'Windows'
+  - pyliblzfse>=0.4.1 ; sys_platform != 'win32'
   - pyright>=1.1.308 ; extra == 'dev'
   - ruff==0.6.2 ; extra == 'dev'
   - pre-commit==3.3.2 ; extra == 'dev'
