@@ -21,6 +21,8 @@ class RerunConfig:
 
     def __post_init__(self):
         rr.init(application_id=self.application)
+        rr.serve_web(browser=False)
+
         rec: RecordingStream = rr.get_global_data_recording()  # type: ignore[assignment]
 
         if self.save is not None:

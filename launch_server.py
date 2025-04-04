@@ -26,7 +26,7 @@ app = modal.App(
     .run_commands(
         "git clone https://github.com/N-Demir/hloc-glomap.git"
     )
-    .workdir("hloc-glomap")
+    .workdir("/root/hloc-glomap")
     .run_commands(
         "pixi install",
         "pixi run post-install",
