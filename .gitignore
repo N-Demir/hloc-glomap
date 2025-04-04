@@ -1,3 +1,5 @@
+sfm_output/*
+output/*
 *.json
 
 # Byte-compiled / optimized / DLL files

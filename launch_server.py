@@ -50,7 +50,7 @@ def wait_for_port(host, port, q):
 
 # Could add a volume but not sure what I would be using it for
 # volumes={"/root/workspace": modal.Volume.from_name("modal-server", create_if_missing=True)}
-@app.function(timeout=3600 * 24, gpu="T4")
+@app.function(timeout=3600 * 24, volumes={"/root/.cursor-server": modal.Volume.from_name("cursor-server", create_if_missing=True)}, gpu="T4")
 def launch_ssh(q):
 
     with modal.forward(22, unencrypted=True) as tunnel:

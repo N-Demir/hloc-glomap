@@ -12,11 +12,10 @@ import tyro
 class RerunConfig:
     application: str = "reconstruction-hloc-glomap"
     """Name of the application"""
-    spawn: bool = True
+    headless: bool = True
     """Wether to spawn a new rerun instance or not"""
     connect: bool = False
     """Wether to connect to an existing rerun instance or not"""
-    headless: bool = False
     save: Path | None = None
     """Path to save the rerun data, this will make it so no data is visualized but saved"""
 
@@ -71,7 +70,7 @@ class ReconstructionConfig:
 def main(config: ReconstructionConfig) -> None:
     run_hloc_reconstruction(
         image_dir=config.image_dir,
-        colmap_dir=config.image_dir.parent
+        sfm_output_dir=Path("sfm_output") / config.image_dir.parent.name
         / f"{config.mapper_cmd}-{config.feature_type}-{config.matcher_type}",
         camera_model=config.camera_model,
         verbose=config.verbose,

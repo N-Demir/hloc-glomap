@@ -109,7 +109,7 @@ def reconstruction_fn(
     progress(progress=0.15, desc="Running reconstruction... (this may take a while)")
     run_hloc_reconstruction(
         image_dir=images_dir,
-        colmap_dir=video_dir,
+        sfm_output_dir=video_dir,
         matching_method=matching_method,
         feature_type=feature_type,
         matcher_type=matcher_type,

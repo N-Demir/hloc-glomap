@@ -191,7 +191,7 @@ def send_data_columns(matched_images: np.ndarray, cam_log_path: str) -> None:
 
 def run_hloc_reconstruction(
     image_dir: Path,
-    colmap_dir: Path,
+    sfm_output_dir: Path,
     camera_model: CameraModel = CameraModel.OPENCV,
     verbose: bool = False,
     matching_method: Literal["vocab_tree", "exhaustive", "sequential"] = "sequential",
@@ -233,21 +233,22 @@ def run_hloc_reconstruction(
         pairs_from_retrieval,
     )
 
-    timing_logger = TimingLogger(header=f"{colmap_dir.name}")
+    timing_logger = TimingLogger(header=f"{sfm_output_dir.name}")
 
-    if colmap_dir.exists() and colmap_dir.name == "test":
+    if sfm_output_dir.exists() and sfm_output_dir.name == "test":
         print("Removing existing colmap_dir")
         import shutil
 
-        shutil.rmtree(colmap_dir)
+        shutil.rmtree(sfm_output_dir)
 
-    sfm_dir_extension = colmap_cmd + matching_method + feature_type + matcher_type
+    sfm_dir_extension = colmap_cmd + "_" + matching_method + "_" + feature_type + "_" + matcher_type
 
-    outputs = colmap_dir
+    outputs = sfm_output_dir
     sfm_pairs = outputs / "pairs-netvlad.txt"
-    sfm_dir = outputs / f"sparse_{sfm_dir_extension}" / "0"
     features = outputs / "features.h5"
     matches = outputs / "matches.h5"
+    
+    sfm_dir = image_dir.parent / f"sparse_{sfm_dir_extension}"
 
     # load bgr images into a dict for logging
     bgr_dict: dict[str, np.ndarray] = {}
@@ -312,8 +313,8 @@ def run_hloc_reconstruction(
         assert sfm_pairs.exists(), sfm_pairs
         assert matches.exists(), matches
 
-        sfm_dir.mkdir(parents=True, exist_ok=True)
-        database = sfm_dir / "database.db"
+        sfm_output_dir.mkdir(parents=True, exist_ok=True)
+        database = sfm_output_dir / "database.db"
 
         create_empty_db(database)
         import_images(
@@ -366,12 +367,12 @@ def run_hloc_reconstruction(
 
         # save to parent directory so it works with nerfstudio out of the box
         colmap_to_json(
-            recon_dir=sfm_dir,
-            output_dir=colmap_dir.parent,
+            recon_dir=sfm_dir / "0",
+            output_dir=sfm_output_dir,
         )
         rr.reset_time()  # Clears all set timeline info.
         read_and_log_sparse_reconstruction(
-            model_path=sfm_dir, filter_output=False, resize=None, extention=".bin"
+            model_path=sfm_dir / "0", filter_output=False, resize=None, extention=".bin"
         )
 
         CONSOLE.log(f"[bold green]:tada: Done {colmap_cmd} bundle adjustment.")
