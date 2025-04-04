@@ -32,7 +32,7 @@ app = modal.App(
         "pixi install",
         "pixi run post-install",
         gpu="T4"
-    )
+    ).add_local_dir(".", remote_path="/root/hloc-glomap")
 )
 
 LOCAL_PORT = 9090
