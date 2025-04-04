@@ -64,7 +64,7 @@ class ReconstructionConfig:
     """Use single camera mode"""
     use_loop_closure: bool = True
     """Use loop closure"""
-    mapper_cmd: Literal["colmap", "glomap"] = "colmap"
+    mapper_cmd: Literal["colmap", "glomap"] = "glomap"
     """Mapper command"""
 
 

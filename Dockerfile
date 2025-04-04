@@ -70,19 +70,3 @@ RUN conda config --add channels defaults
 
 # Make sure conda is in the PATH
 ENV PATH /opt/conda/bin:$PATH
-
-
-######## Specific for repo
-
-# Download the repo
-RUN git clone https://github.com/N-Demir/hloc-glomap.git
-
-WORKDIR hloc-glomap
-
-# TODO: maybe necessary to use this
-# Set CUDA override for Pixi -- 
-# ENV CONDA_OVERRIDE_CUDA=11.8
-
-# Initialize pixi environment
-RUN pixi install
-RUN pixi run post-install

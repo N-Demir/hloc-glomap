@@ -343,13 +343,11 @@ def run_hloc_reconstruction(
 
         # Bundle adjustment
         num_images: int = len(list(image_dir.glob("*")))
-        sparse_dir = colmap_dir / "sparse"
-        sparse_dir.mkdir(parents=True, exist_ok=True)
         mapper_cmd = [
             f"{colmap_cmd} mapper",
             f"--database_path {database}",
             f"--image_path {image_dir}",
-            f"--output_path {sparse_dir}",
+            f"--output_path {sfm_dir}",
         ]
         if colmap_cmd == "glomap":
             mapper_cmd += [
