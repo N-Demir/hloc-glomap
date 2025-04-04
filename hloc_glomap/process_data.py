@@ -241,7 +241,7 @@ def run_hloc_reconstruction(
 
         shutil.rmtree(sfm_output_dir)
 
-    sfm_dir_extension = colmap_cmd + "_" + matching_method + "_" + feature_type + "_" + matcher_type
+    sfm_dir_extension = colmap_cmd + "-" + matching_method + feature_type + "-" + matcher_type
 
     outputs = sfm_output_dir
     sfm_pairs = outputs / "pairs-netvlad.txt"
