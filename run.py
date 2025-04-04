@@ -25,8 +25,9 @@ app = modal.App(
         "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config",
         "echo 'root: ' | chpasswd"
     )
+    .workdir("/root")
     .run_commands(
-        "git clone https://github.com/N-Demir/hloc-glomap.git"
+        "git clone https://github.com/N-Demir/hloc-glomap.git",
     )
     .workdir("/root/hloc-glomap")
     .run_commands(

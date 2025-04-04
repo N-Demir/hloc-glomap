@@ -69,12 +69,12 @@ unzip = ">=6.0,<7"
 [tool.pixi.tasks]
 _make-third_party-dir = { cmd = "ls third_party || mkdir third_party" }
 _download_vocab_tree = "ls vocab_tree_flickr100K_words32K.bin || wget https://demuc.de/colmap/vocab_tree_flickr100K_words32K.bin"
-post-install = { cmd = "glomap -h", depends_on = [
+post-install = { cmd = "glomap -h", depends-on = [
     # "_hloc-install",
     "_download_vocab_tree",
     "_install-glomap",
 ] }
-app = { cmd = "python tools/app.py", description = "Run the gradio app", depends_on = [
+app = { cmd = "python tools/app.py", description = "Run the gradio app", depends-on = [
     "post-install",
 ] }
 
@@ -87,7 +87,7 @@ test -e "glomap"
 """
 cwd = "third_party"
 outputs = ["glomap"]
-depends_on = ["_make-third_party-dir"]
+depends-on = ["_make-third_party-dir"]
 
 [tool.pixi.tasks._clean-glomap]
 cmd = "rm -rf build"
@@ -104,7 +104,7 @@ cmake -B build -S . -GNinja \
     -DCHOLMOD_INCLUDE_DIR=$CONDA_PREFIX/include/suitesparse
 """
 cwd = "third_party/glomap"
-depends_on = ["_clone-glomap", "_make-third_party-dir"]
+depends-on = ["_clone-glomap", "_make-third_party-dir"]
 
 [tool.pixi.tasks._install-glomap]
 cmd = "ninja -C build && ninja -C build install"
@@ -116,7 +116,7 @@ cmd = """
     time python tools/reconstruct.py
     """
 description = "Reconstruct the scene using LightGlue and Glomap."
-depends_on = ["post-install"]
+depends-on = ["post-install"]
 
 [tool.pixi.feature.nerfstudio.system-requirements]
 libc = { family = "glibc", version = "2.31" }
