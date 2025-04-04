@@ -38,8 +38,9 @@ app = modal.App(
 
 # Could add a volume but not sure what I would be using it for
 # volumes={"/root/workspace": modal.Volume.from_name("modal-server", create_if_missing=True)}
-@app.function(timeout=3600 * 24, volumes={"/root/.cursor-server": modal.Volume.from_name("cursor-server", create_if_missing=True)}, gpu="T4")
+@app.function(timeout=3600, volumes={"/root/hloc-glomap/data": modal.Volume.from_name("data", create_if_missing=True)}, gpu="T4")
 def run_reconstruction(dataset: str, feature: str, matcher: str):
+    subprocess.run("git pull", shell=True)
 
     subprocess.run(f"gcloud storage rsync -r gs://tour_storage/data/{dataset} data/{dataset}", shell=True)
 
@@ -68,4 +69,4 @@ def main(dataset: str):
     ]
 
     for feature, matcher in feature_matcher_pairs:
-        run_reconstruction(dataset, feature, matcher)
+        run_reconstruction.remote(dataset, feature, matcher)

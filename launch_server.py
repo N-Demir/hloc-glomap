@@ -23,6 +23,7 @@ app = modal.App(
         "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config",
         "echo 'root: ' | chpasswd"
     )
+    .workdir("/root")
     .run_commands(
         "git clone https://github.com/N-Demir/hloc-glomap.git"
     )
@@ -52,6 +53,7 @@ def wait_for_port(host, port, q):
 # volumes={"/root/workspace": modal.Volume.from_name("modal-server", create_if_missing=True)}
 @app.function(timeout=3600 * 24, volumes={"/root/.cursor-server": modal.Volume.from_name("cursor-server", create_if_missing=True)}, gpu="T4")
 def launch_ssh(q):
+    subprocess.run(["git", "pull"])
 
     with modal.forward(22, unencrypted=True) as tunnel:
         host, port = tunnel.tcp_socket
